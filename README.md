@@ -1,3 +1,5 @@
+Require BunJS , MariaDB
+
 สร้างไฟล์ .env.local
 ใส่ข้อมูลตามนี้
 
