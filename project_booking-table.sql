@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
--- Host:                         localhost
+-- Host:                         127.0.0.1
 -- Server version:               12.0.2-MariaDB-ubu2404 - mariadb.org binary distribution
 -- Server OS:                    debian-linux-gnu
--- HeidiSQL Version:             12.10.0.7000
+-- HeidiSQL Version:             12.1.0.6537
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS `bookings` (
   `order_id` varchar(255) DEFAULT NULL,
   `check_in_token` varchar(255) DEFAULT NULL,
   `check_in_token_expires_at` datetime DEFAULT NULL,
+  `total_price` decimal(10,2) NOT NULL DEFAULT 0.00,
   PRIMARY KEY (`id`),
   UNIQUE KEY `table_id_booking_date_unique` (`table_id`,`booking_date`),
   KEY `user_id` (`user_id`),
@@ -43,9 +44,9 @@ CREATE TABLE IF NOT EXISTS `bookings` (
   KEY `idx_bookings_date_status` (`booking_date`,`status`),
   CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`table_id`) REFERENCES `tables` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table cy_project_app.bookings: ~0 rows (approximately)
 
 -- Dumping structure for table cy_project_app.booking_attempts
 CREATE TABLE IF NOT EXISTS `booking_attempts` (
@@ -58,9 +59,9 @@ CREATE TABLE IF NOT EXISTS `booking_attempts` (
   PRIMARY KEY (`id`),
   KEY `table_id` (`table_id`),
   CONSTRAINT `booking_attempts_ibfk_1` FOREIGN KEY (`table_id`) REFERENCES `tables` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table cy_project_app.booking_attempts: ~0 rows (approximately)
 
 -- Dumping structure for table cy_project_app.booking_orders
 CREATE TABLE IF NOT EXISTS `booking_orders` (
@@ -77,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `booking_orders` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table cy_project_app.booking_orders: ~0 rows (approximately)
 
 -- Dumping structure for table cy_project_app.categories
 CREATE TABLE IF NOT EXISTS `categories` (
@@ -87,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table cy_project_app.categories: ~0 rows (approximately)
 
 -- Dumping structure for table cy_project_app.events
 CREATE TABLE IF NOT EXISTS `events` (
@@ -104,9 +105,13 @@ CREATE TABLE IF NOT EXISTS `events` (
   `tickets_sold` int(11) NOT NULL DEFAULT 0 COMMENT 'จำนวนบัตรที่ขายไปแล้ว',
   `is_active` tinyint(1) NOT NULL DEFAULT 1 COMMENT 'สถานะการเปิดขายบัตร',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table cy_project_app.events: ~3 rows (approximately)
+INSERT INTO `events` (`id`, `image_url`, `alt_text`, `link_url`, `sort_order`, `title`, `date`, `description`, `price`, `total_tickets`, `tickets_sold`, `is_active`) VALUES
+	(6, '/uploads/1762413482604-thumbnail-V2-TYPE_F-1.jpg', '', NULL, 0, 'Three Man Down', '2026-01-01', '', 10.00, 1000, 1, 1),
+	(7, '/uploads/1762413547656-hq720.jpg', '', NULL, 0, 'Saran', '2025-11-28', '', 20.00, 500, 1, 1),
+	(8, '/uploads/1762413591168-1651560797_68215_ZENT_KA1.webp', '', NULL, 0, 'ZentYarb', '2025-11-21', '', 10.00, 100, 0, 1);
 
 -- Dumping structure for table cy_project_app.event_orders
 CREATE TABLE IF NOT EXISTS `event_orders` (
@@ -128,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `event_orders` (
   CONSTRAINT `event_orders_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table cy_project_app.event_orders: ~0 rows (approximately)
 
 -- Dumping structure for table cy_project_app.event_tickets
 CREATE TABLE IF NOT EXISTS `event_tickets` (
@@ -147,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `event_tickets` (
   CONSTRAINT `event_tickets_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table cy_project_app.event_tickets: ~0 rows (approximately)
 
 -- Dumping structure for table cy_project_app.menu_items
 CREATE TABLE IF NOT EXISTS `menu_items` (
@@ -163,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `menu_items` (
   CONSTRAINT `menu_items_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table cy_project_app.menu_items: ~0 rows (approximately)
 
 -- Dumping structure for table cy_project_app.notifications
 CREATE TABLE IF NOT EXISTS `notifications` (
@@ -177,7 +182,7 @@ CREATE TABLE IF NOT EXISTS `notifications` (
   CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table cy_project_app.notifications: ~0 rows (approximately)
 
 -- Dumping structure for table cy_project_app.orders
 CREATE TABLE IF NOT EXISTS `orders` (
@@ -194,7 +199,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table cy_project_app.orders: ~0 rows (approximately)
 
 -- Dumping structure for table cy_project_app.order_items
 CREATE TABLE IF NOT EXISTS `order_items` (
@@ -210,7 +215,7 @@ CREATE TABLE IF NOT EXISTS `order_items` (
   CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`menu_item_id`) REFERENCES `menu_items` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table cy_project_app.order_items: ~0 rows (approximately)
 
 -- Dumping structure for table cy_project_app.settings
 CREATE TABLE IF NOT EXISTS `settings` (
@@ -219,7 +224,13 @@ CREATE TABLE IF NOT EXISTS `settings` (
   PRIMARY KEY (`setting_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table cy_project_app.settings: ~5 rows (approximately)
+INSERT INTO `settings` (`setting_key`, `setting_value`) VALUES
+	('booking_enabled', 'true'),
+	('layoutImageUrl', 'https://i.ibb.co/yjmdRHD/T-1-1.png'),
+	('max_bookings_per_user', '2'),
+	('promptpayAccount', '0931617671'),
+	('transfer_fee', '10');
 
 -- Dumping structure for table cy_project_app.tables
 CREATE TABLE IF NOT EXISTS `tables` (
@@ -232,9 +243,24 @@ CREATE TABLE IF NOT EXISTS `tables` (
   KEY `zone_id` (`zone_id`),
   KEY `idx_tables_zone_id` (`zone_id`),
   CONSTRAINT `tables_ibfk_1` FOREIGN KEY (`zone_id`) REFERENCES `zones` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table cy_project_app.tables: ~14 rows (approximately)
+INSERT INTO `tables` (`id`, `table_number`, `capacity`, `status`, `zone_id`) VALUES
+	(9, 'A1', 4, 'available', 6),
+	(10, 'A2', 4, 'available', 6),
+	(11, 'A3', 4, 'available', 6),
+	(12, 'A4', 4, 'available', 6),
+	(13, 'B1', 6, 'available', 7),
+	(14, 'B2', 6, 'available', 7),
+	(15, 'B3', 6, 'available', 7),
+	(17, 'C1', 6, 'available', 8),
+	(18, 'C2', 6, 'available', 8),
+	(22, 'D1', 4, 'available', 9),
+	(23, 'D2', 4, 'available', 9),
+	(24, 'VIP1', 8, 'available', 10),
+	(25, 'VIP2', 8, 'available', 10),
+	(26, 'VIP3', 8, 'available', 10);
 
 -- Dumping structure for table cy_project_app.used_slip_refs
 CREATE TABLE IF NOT EXISTS `used_slip_refs` (
@@ -243,9 +269,9 @@ CREATE TABLE IF NOT EXISTS `used_slip_refs` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_ref_nbr` (`ref_nbr`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table cy_project_app.used_slip_refs: ~0 rows (approximately)
 
 -- Dumping structure for table cy_project_app.users
 CREATE TABLE IF NOT EXISTS `users` (
@@ -257,9 +283,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `line_id` (`line_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table cy_project_app.users: ~0 rows (approximately)
 
 -- Dumping structure for table cy_project_app.zones
 CREATE TABLE IF NOT EXISTS `zones` (
@@ -269,9 +295,15 @@ CREATE TABLE IF NOT EXISTS `zones` (
   `price` decimal(10,2) DEFAULT 0.00,
   `booking_fee` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Data exporting was unselected.
+-- Dumping data for table cy_project_app.zones: ~5 rows (approximately)
+INSERT INTO `zones` (`id`, `name`, `description`, `price`, `booking_fee`) VALUES
+	(6, 'A', NULL, 0.00, 10),
+	(7, 'B', NULL, 0.00, 10),
+	(8, 'C', NULL, 0.00, 10),
+	(9, 'D', NULL, 0.00, 10),
+	(10, 'VIP', NULL, 0.00, 10);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
